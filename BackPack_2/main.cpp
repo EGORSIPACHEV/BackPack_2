@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-
+using namespace std;
 //Жадный алгоритм, один внутри другого, нужно отсортировать по весу и соответствующему индексу
 /*
 Arrays.sort(tasks); //сортируем по убыванию стоимости
@@ -33,7 +33,7 @@ for (int i = 0; i < n; ++i) {
  */
 
 int solve(int n, vector<int> values, vector<int> weights, int W) {
-    vector<int> memo1(W+1, 0); //буфер 1
+    vector<int>; memo1(W+1, 0); //буфер 1
     vector<int> memo2(W+1, 0); // буфер 2
     for (int i = 1; i <= n; i++) { //первый итерационный цикл
         vector<int> temp = memo1;
@@ -61,5 +61,13 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
     //jkjk
+    
+    string path = "";
+           auto it = fs::directory_iterator(path);
+           vector<fs::path> array_path;
+           copy_if(fs::begin(it), fs::end(it), std::back_inserter(array_path),           [](const auto& entry) { //копируем из файла в буфер программы
+                   return fs::is_regular_file(entry);
+           });
+    
     return 0;
 }
