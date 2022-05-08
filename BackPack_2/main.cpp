@@ -8,32 +8,10 @@
 #include <iostream>
 
 using namespace std;
-//Жадный алгоритм, один внутри другого, нужно отсортировать по весу и соответствующему индексу
-/*
-Arrays.sort(tasks); //сортируем по убыванию стоимости
-TreeSet<Integer> time = new TreeSet<Integer>();
-for (int i = 1; i <= n; ++i) {
-  time.add(i);
-}
-int ans = 0;
-for (int i = 0; i < n; ++i) {
-  Integer tmp = time.floor(tasks[i].time);
-  if (tmp == null) { // если нет свободного места в расписании, то в конец
-  time.remove(time.last());
-  } else { //иначе можно выполнить задание, добавляем в расписание
-    time.remove(tmp);
-    ans += tasks[i].cost;
-  }
-}
- */
-/*Алгоритм:
- - Задать два массива, с индексами и весами
- - Пустить цикл внутри цикла, передавая соответствующий индекс
- - Найти результат посредствам сравнения
- */
+namespace fs = filesystem;
 
 int solve(int n, vector<int> values, vector<int> weights, int W) {
-    vector<int>; memo1(W+1, 0); //буфер 1
+    vector<int> memo1(W+1, 0); //буфер 1
     vector<int> memo2(W+1, 0); // буфер 2
     for (int i = 1; i <= n; i++) { //первый итерационный цикл
         vector<int> temp = memo1;
@@ -58,16 +36,28 @@ int solve(int n, vector<int> values, vector<int> weights, int W) {
 
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    //jkjk
-    
     string path = "";
            auto it = fs::directory_iterator(path);
-           vector<fs::path> array_path;
-           copy_if(fs::begin(it), fs::end(it), std::back_inserter(array_path),           [](const auto& entry) { //копируем из файла в буфер программы
+    vector<path> array_path;
+    copy_if(fs::begin(it), fs::end(it), std::back_inserter(array_path),[](const auto& entry) { //копируем из файла в буфер программы
                    return fs::is_regular_file(entry);
            });
-    
+    for (auto& p : array_path) { //инициализация типа ссылки в итерации
+            ifstream fin;
+            fin.open(p.string());
+            cout << p.string() << endl;
+            int n, W;
+            fin >> n >> W;
+            vector<int> values;
+            vector<int> weights;
+            for (int i = 0; i < n; i++) {
+                int value, weight;
+                fin >> value >> weight;//считываем из файла
+                values.push_back(value);
+                weights.push_back(weight);
+            } //составление матрицы
+            int max_value = solve(n, values, weights, W);
+            cout << max_value << endl;
+        }
     return 0;
 }
