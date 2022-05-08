@@ -31,6 +31,32 @@ for (int i = 0; i < n; ++i) {
  - Пустить цикл внутри цикла, передавая соответствующий индекс
  - Найти результат посредствам сравнения
  */
+
+int solve(int n, vector<int> values, vector<int> weights, int W) {
+    vector<int> memo1(W+1, 0); //буфер 1
+    vector<int> memo2(W+1, 0); // буфер 2
+    for (int i = 1; i <= n; i++) { //первый итерационный цикл
+        vector<int> temp = memo1;
+        memo1 = memo2;
+        memo2 = temp;//темпорари переменная для сортировки
+        for (int j = 0; j <= W; j++) {
+            memo2[j] = memo1[j];
+            if (j - weights[i - 1] >= 0) {
+                memo2[j] = max(memo2[j], memo1[j - weights[i-1]] + values[i-1]); //выбираем максимальные из полседующих
+            }
+        }
+    }
+    int result = 0; //задаем результат минимальным
+    for (int i = W; i >= 0; i--) { //цикл уменьшаем, так как нужно идти в обратную сторону
+        if(memo2[i] != 0) {
+            result = memo2[i]; //находим результирующую, это будет максимальный элемент из последующих
+            break;
+        }
+    }
+    return result;
+}
+
+
 int main(int argc, const char * argv[]) {
     // insert code here...
     std::cout << "Hello, World!\n";
